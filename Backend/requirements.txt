@@ -1,0 +1,23 @@
+# Python 3.12-compatible dependency set
+
+# Core ML and Computer Vision
+opencv-python==4.10.0.84
+numpy==1.26.4
+ultralytics==8.3.78
+
+# Face Recognition
+mtcnn==1.0.0
+keras-facenet==0.3.2
+tensorflow==2.18.0
+scikit-learn==1.6.1
+
+# Web Framework
+flask==3.1.0
+flask-cors==5.0.0
+
+# Database
+pymongo==4.10.1
+
+# Utilities
+Pillow==11.1.0
+psutil==6.1.1

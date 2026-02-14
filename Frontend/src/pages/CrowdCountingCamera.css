@@ -1,0 +1,890 @@
+/* CrowdCountingCamera.css */
+.crowd-camera-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh; /* modern mobile viewport */
+  
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: 'Arial', sans-serif;
+  z-index: 1000;
+}
+
+/* Header Bar */
+.camera-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.camera-header h1 {
+  color: white;
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  flex: 1;
+}
+
+.back-button, .stop-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.back-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.stop-button {
+  background: #ff4757;
+  color: white;
+}
+
+.stop-button:hover:not(:disabled) {
+  background: #ff3742;
+  transform: translateY(-2px);
+}
+
+.stop-button:disabled {
+  background: rgba(255, 255, 255, 0.2);
+  cursor: not-allowed;
+}
+
+/* Main Camera Area */
+.camera-main {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+}
+
+.camera-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  padding: clamp(16px, 4vw, 40px);
+  box-sizing: border-box;
+  overflow: auto; /* prevent clipping on small viewports */
+}
+
+.camera-overlay.active {
+  justify-content: flex-start;
+  padding: 20px 40px 5px 40px;
+}
+
+/* Loading State */
+.loading-spinner {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.loading-spinner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 4px solid transparent;
+  border-top: 4px solid #00dfd0;
+  border-right: 4px solid #1bb5ab;
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+}
+
+.loading-spinner::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: calc(100% - 16px);
+  height: calc(100% - 16px);
+  border: 3px solid transparent;
+  border-bottom: 3px solid #ff6b6b;
+  border-left: 3px solid #feca57;
+  border-radius: 50%;
+  animation: spin-reverse 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Multi-Face Camera Specific Styles */
+.multi-face-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 80px;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  border-radius: 17px;
+  color: white;
+  text-align: center;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.multi-face-placeholder .loading-spinner {
+  margin-bottom: 25px;
+}
+
+.multi-face-placeholder p {
+  margin: 8px 0;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.multi-face-placeholder .instruction {
+  font-size: 0.95rem;
+  opacity: 0.7;
+  color: #bdc3c7;
+}
+
+/* Start Screen */
+.start-screen h2 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.start-screen p {
+  font-size: 1.3rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+.start-button {
+  padding: 15px 40px;
+  background: linear-gradient(135deg, #00dfd0 0%, #1bb5ab 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(245, 87, 108, 0.3);
+}
+
+.start-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(245, 87, 108, 0.4);
+}
+
+/* Live Counting State */
+.camera-overlay.active {
+  background: transparent;
+  backdrop-filter: none;
+}
+
+.live-stats {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 25px 35px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  min-width: 150px;
+}
+
+.stat-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.count-display {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #4ecdc4;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.count-display.max {
+  color: #f093fb;
+}
+
+.live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.pulse-dot {
+  width: 12px;
+  height: 12px;
+  background: #ff4757;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+.camera-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.stop-live-button {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 15px;
+}
+
+.stop-live-button:hover {
+  background: linear-gradient(135deg, #c0392b, #a93226);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+.stop-live-button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.force-stop-button {
+  background: linear-gradient(135deg, #8e44ad, #732d91);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.force-stop-button:hover {
+  background: linear-gradient(135deg, #732d91, #5b2c6f);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(142, 68, 173, 0.4);
+}
+
+.force-stop-button:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Camera Feed */
+.camera-feed-container {
+  width: 95%;
+  max-width: 1400px; /* increased from 1200px */
+  margin: 30px auto;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  background: #1a1a1a;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.camera-feed {
+  width: 100%;
+  height: auto;
+  max-height: 900px; /* increased from 800px */
+  display: block;
+  object-fit: contain;
+}
+
+/* Square container for face registration/auth feeds */
+.square {
+  width: 95%;
+  max-width: 800px;
+  margin: 20px auto;
+  aspect-ratio: 1 / 1; /* square */
+  border-radius: 17px;
+  overflow: hidden;
+  background: #1a1a1a;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.square-feed {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover; /* fill square nicely */
+  aspect-ratio: 1 / 1;
+}
+
+
+.camera-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.7);
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  min-height: 300px;
+}
+
+/* Duplicate loading-spinner styles removed - using main definition above */
+
+.camera-instruction {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 15px 0;
+  text-align: center;
+}
+
+/* Result Screen */
+.result-screen h2 {
+  font-size: clamp(1.5rem, 2.5vw + 1rem, 2.5rem);
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.final-results {
+  margin-bottom: 30px;
+}
+
+.result-card {
+  background: rgba(255, 255, 255, 0.1);
+  padding: clamp(16px, 2.5vw, 25px);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: min(90vw, 600px);
+}
+
+.result-card h3 {
+  margin: 0 0 15px 0;
+  font-size: 1.3rem;
+}
+
+.result-output {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 1rem;
+  white-space: pre-wrap;
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.result-actions, .error-actions {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.restart-button, .retry-button, .dashboard-button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+}
+
+.restart-button, .retry-button {
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  color: white;
+}
+
+.dashboard-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.restart-button:hover, .retry-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(78, 205, 196, 0.3);
+}
+
+.dashboard-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Error Screen */
+.error-screen h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #ff4757;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.error-screen p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+/* Footer Instructions */
+.camera-footer {
+  padding: 15px 30px;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.instructions-bar {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  color: white;
+}
+
+.instruction-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.instruction-item .icon {
+  font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .camera-header {
+    padding: 10px 20px;
+  }
+  
+  .camera-header h1 {
+    font-size: 1.4rem;
+  }
+  
+  .live-stats {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .stat-card {
+    padding: 20px 25px;
+    min-width: auto;
+  }
+  
+  .count-display {
+    font-size: 2.5rem;
+  }
+  
+  .instructions-bar {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  .result-actions, .error-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .camera-feed-container {
+    max-width: 95vw;
+  }
+  
+  .camera-feed-container.square {
+    max-width: 95vw;
+    margin: 15px auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .camera-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+  
+  .start-screen h2 {
+    font-size: 2rem;
+  }
+  
+  .result-screen h2 {
+    font-size: 2rem;
+  }
+  
+  .camera-feed-container {
+    max-width: 98vw;
+  }
+  
+  .camera-feed-container.square {
+    max-width: 98vw;
+    margin: 10px auto;
+    max-height: 400px;
+  }
+}
+/* Square video container - removed duplicate, using main definition below */
+
+/* Camera Feed Container - Main video display area */
+.camera-feed-container {
+  position: relative;
+  width: 100%;
+  max-width: 1100px; /* increased from 900px */
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  background: transparent;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 15px 40px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* Square aspect ratio for face recognition consistency */
+.camera-feed-container.square {
+  aspect-ratio: 16 / 9; /* Better for multi-face recognition - wider view */
+  max-height: 600px; /* increased from 500px */
+  width: 100%;
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+/* Camera feed image styling */
+.camera-feed {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 17px; /* Slightly smaller than container for border effect */
+}
+
+.camera-feed.square-feed {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Camera placeholder styles removed - all components now use multi-face-placeholder */
+
+/* Camera Controls */
+.camera-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  gap: 20px;
+}
+
+/* Live count display overlay */
+.count-overlay {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 10;
+}
+
+.count-overlay h4 {
+  margin: 0 0 5px 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.count-overlay .count-display {
+  font-size: 2rem;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .camera-feed-container {
+    max-width: 950px; /* increased from 800px */
+    max-height: 550px; /* increased from 450px */
+  }
+  
+  .camera-placeholder {
+    height: 550px; /* increased from 450px */
+  }
+}
+
+@media (max-width: 768px) {
+  .camera-feed-container {
+    max-width: 95vw;
+    max-height: 420px; /* increased from 350px */
+    margin: 0 15px;
+  }
+  
+  .camera-placeholder {
+    height: 420px; /* increased from 350px */
+  }
+  
+  .camera-header {
+    padding: 10px 20px;
+  }
+  
+  .camera-header h1 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .camera-feed-container {
+    max-width: 98vw;
+    max-height: 320px; /* increased from 280px */
+    margin: 0 5px;
+  }
+  
+  .camera-placeholder {
+    height: 320px; /* increased from 280px */
+  }
+  
+  .count-overlay {
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px;
+  }
+  
+  .count-overlay .count-display {
+    font-size: 1.5rem;
+  }
+}
+
+/* Multi-Face Authentication Results Styling */
+.result-screen {
+  text-align: center;
+  color: white;
+  padding: clamp(16px, 4vw, 40px);
+  max-width: min(92vw, 800px);
+  margin: 0 auto;
+}
+
+.result-screen h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  color: #00dfd0;
+}
+
+.final-results {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 30px;
+}
+
+.result-card h3 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.count-display.final {
+  font-size: clamp(2.2rem, 4vw + 1rem, 4rem);
+  font-weight: bold;
+  color: #00dfd0;
+  margin: 20px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.recognized-users {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.recognized-users h4 {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-align: center;
+}
+
+.final-user-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.final-user-item {
+  margin-bottom: 15px;
+}
+
+.user-info-card {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 15px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.user-info-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.user-info-card .icon {
+  font-size: 1.5rem;
+  margin-right: 15px;
+  color: #00dfd0;
+}
+
+.user-details {
+  flex: 1;
+}
+
+.user-name {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.user-email {
+  display: block;
+  font-size: 0.9rem;
+  color: #bdc3c7;
+  margin-bottom: 5px;
+}
+
+.similarity {
+  display: block;
+  font-size: 0.85rem;
+  color: #00dfd0;
+  font-weight: 500;
+}
+
+.no-recognition {
+  text-align: center;
+  padding: 30px;
+  color: #e74c3c;
+}
+
+.no-recognition p {
+  margin: 10px 0;
+  font-size: 1.1rem;
+}
+
+.success-message {
+  font-size: 1.1rem;
+  color: #2ecc71;
+  margin-top: 20px;
+  font-weight: 500;
+}
+
+.result-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.restart-button, .dashboard-button {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.restart-button {
+  background: linear-gradient(135deg, #00dfd0 0%, #1bb5ab 100%);
+  color: white;
+}
+
+.restart-button:hover {
+  background: linear-gradient(135deg, #1bb5ab 0%, #00dfd0 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 223, 208, 0.4);
+}
+
+.dashboard-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dashboard-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+}
+

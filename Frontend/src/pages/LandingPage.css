@@ -1,0 +1,420 @@
+.landing-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 80px);
+    padding: 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, #2A00B7 0%, #42006C 50%, #1a0040 100%);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .welcome-section {
+    max-width: 800px;
+    margin-bottom: 3rem;
+    z-index: 2;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 
+      0 15px 35px rgba(0, 0, 0, 0.3),
+      0 5px 15px rgba(60, 0, 157, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transform: perspective(1000px) rotateX(2deg);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  .welcome-section:hover {
+    transform: perspective(1000px) rotateX(0deg) translateY(-5px);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.4),
+      0 8px 25px rgba(60, 0, 157, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 0 30px rgba(138, 43, 226, 0.3);
+  }
+  
+  .greeting-text {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    margin-bottom: 1rem;
+    animation: fadeIn 1s ease-in-out;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, #8a2be2 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: white;
+    display: inline-block;
+    font-weight: 700;
+  }
+  
+  .welcome-text {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    animation: slideInUp 1.2s ease-out;
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+  }
+  
+  .welcome-text::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-radius: 2px;
+    animation: expandWidth 1s ease-out forwards;
+    animation-delay: 1s;
+    box-shadow: 0 2px 8px rgba(60, 0, 157, 0.4);
+  }
+  
+  .subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    animation: fadeIn 1.5s ease-in-out;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  
+  .cta-buttons {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    z-index: 2;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .cta-button {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 
+      0 4px 15px rgba(60, 0, 157, 0.4),
+      0 2px 8px rgba(76, 0, 180, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+    min-width: 180px;
+  }
+  
+  .cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+  }
+  
+  .cta-button:hover::before {
+    left: 100%;
+  }
+  
+  .primary-button {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, #6a1b9a 100%);
+    color: white;
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+  }
+  
+  .primary-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+  }
+  
+  .primary-button:hover {
+    background: linear-gradient(135deg, var(--hover-color) 0%, var(--primary-color) 50%, var(--secondary-color) 100%);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+      0 8px 25px rgba(60, 0, 157, 0.6),
+      0 4px 15px rgba(76, 0, 180, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 0 30px rgba(138, 43, 226, 0.5);
+    background-size: 150% 150%;
+    animation: none;
+  }
+  
+  .primary-button:hover::before {
+    left: 100%;
+  }
+  
+  .secondary-button {
+    background: transparent;
+    color: var(--text-light);
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(5px);
+  }
+  
+  .secondary-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--text-light);
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+      0 8px 25px rgba(255, 255, 255, 0.2),
+      0 4px 15px rgba(255, 255, 255, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  
+  /* Decorative elements */
+  .decoration-element {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  
+  .animated-circle {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0) 70%);
+    top: 10%;
+    right: -50px;
+    animation: float 8s infinite ease-in-out;
+    box-shadow: inset 0 0 20px rgba(52, 152, 219, 0.2);
+    border: 1px solid rgba(52, 152, 219, 0.1);
+  }
+  
+  .animated-square {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 30px;
+    background: radial-gradient(circle, rgba(46, 204, 113, 0.1) 0%, rgba(46, 204, 113, 0) 70%);
+    bottom: 10%;
+    left: -50px;
+    animation: float 10s infinite ease-in-out reverse;
+    box-shadow: inset 0 0 20px rgba(46, 204, 113, 0.2);
+    border: 1px solid rgba(46, 204, 113, 0.1);
+  }
+  
+  /* Additional decorative elements */
+  .floating-dots {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+  }
+  
+  .dot {
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(52, 152, 219, 0.1);
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.1);
+  }
+  
+  .dot:nth-child(1) {
+    width: 30px;
+    height: 30px;
+    top: 15%;
+    left: 10%;
+    animation: floatSlow 7s infinite ease-in-out;
+  }
+  
+  .dot:nth-child(2) {
+    width: 20px;
+    height: 20px;
+    top: 25%;
+    left: 80%;
+    animation: floatSlow 9s infinite ease-in-out 1s;
+  }
+  
+  .dot:nth-child(3) {
+    width: 25px;
+    height: 25px;
+    top: 75%;
+    left: 20%;
+    animation: floatSlow 8s infinite ease-in-out 0.5s;
+  }
+  
+  .dot:nth-child(4) {
+    width: 15px;
+    height: 15px;
+    top: 65%;
+    left: 75%;
+    animation: floatSlow 10s infinite ease-in-out 2s;
+  }
+  
+  .dot:nth-child(5) {
+    width: 35px;
+    height: 35px;
+    top: 45%;
+    left: 5%;
+    animation: floatSlow 12s infinite ease-in-out 1.5s;
+  }
+  
+  /* Blob decoration */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.15;
+    z-index: 0;
+  }
+  
+  .blob-1 {
+    width: 400px;
+    height: 400px;
+    background-color: #3498db;
+    top: -100px;
+    right: -100px;
+    animation: blobMove 20s infinite alternate ease-in-out;
+  }
+  
+  .blob-2 {
+    width: 350px;
+    height: 350px;
+    background-color: #2ecc71;
+    bottom: -100px;
+    left: -100px;
+    animation: blobMove 18s infinite alternate-reverse ease-in-out;
+  }
+  
+  /* Face recognition decorative element */
+  .face-scan {
+    position: absolute;
+    width: 150px;
+    height: 200px;
+    border-radius: 75px;
+    border: 2px solid rgba(52, 152, 219, 0.3);
+    top: 50%;
+    right: 15%;
+    transform: translateY(-50%);
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 0 20px rgba(52, 152, 219, 0.2);
+  }
+  
+  .scan-line {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, transparent, #3498db, transparent);
+    animation: scanAnimation 2s infinite ease-in-out;
+    box-shadow: 0 0 10px rgba(52, 152, 219, 0.7);
+  }
+  
+  .scan-grid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      linear-gradient(to right, rgba(52, 152, 219, 0.1) 1px, transparent 1px) 0 0 / 20px 20px,
+      linear-gradient(to bottom, rgba(52, 152, 219, 0.1) 1px, transparent 1px) 0 0 / 20px 20px;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideInUp {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes float {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+  }
+  
+  @keyframes floatSlow {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(15px, -15px); }
+    100% { transform: translate(0, 0); }
+  }
+  
+  @keyframes expandWidth {
+    from { width: 0; }
+    to { width: 100px; }
+  }
+  
+  @keyframes scanAnimation {
+    0% { top: 0; }
+    50% { top: 100%; }
+    100% { top: 0; }
+  }
+  
+  @keyframes blobMove {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(40px, -30px) scale(1.1); }
+    100% { transform: translate(0, 0) scale(1); }
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .greeting-text {
+      font-size: 2rem;
+    }
+    
+    .welcome-text {
+      font-size: 2.2rem;
+    }
+    
+    .welcome-section {
+      padding: 2rem;
+    }
+    
+    .cta-buttons {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .cta-button {
+      width: 200px;
+      margin: 0 auto;
+    }
+    
+    .blob-1, .blob-2 {
+      width: 250px;
+      height: 250px;
+    }
+    
+    .face-scan {
+      display: block;
+      width: 120px;
+      height: 160px;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
+  }
